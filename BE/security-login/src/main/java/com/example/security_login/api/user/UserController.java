@@ -2,6 +2,7 @@ package com.example.security_login.api.user;
 
 import com.example.security_login.domain.user.dto.UserExistRequestDto;
 import com.example.security_login.domain.user.dto.UserSignupRequestDto;
+import com.example.security_login.domain.user.dto.UserUpdateRequestDto;
 import com.example.security_login.domain.user.service.UserService;
 import com.example.security_login.global.response.ResultCode;
 import com.example.security_login.global.response.ResultResponse;
@@ -33,4 +34,12 @@ public class UserController {
         userService.signup(signupDto);
         return ResultResponse.success(ResultCode.USER_CREATE_SUCCESS);
     }
+
+    // 자체 서비스 회원 정보 수정
+    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResultResponse<?> updateApi(@Valid @RequestBody UserUpdateRequestDto updateDto) {
+        userService.updateUser(updateDto);
+        return ResultResponse.success(ResultCode.USER_INFO_UPDATE_SUCCESS);
+    }
+
 }

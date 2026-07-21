@@ -20,6 +20,12 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 메서드입니다."),
 
     /* ==================
+    *  Authentication(인증)
+    *  ================== */
+    LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다."),
+    INVALID_LOGIN_REQUEST(HttpStatus.BAD_REQUEST, "올바르지 않은 로그인 요청입니다."),
+
+    /* ==================
     *  Authorization(인가)
     *  ================== */
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),

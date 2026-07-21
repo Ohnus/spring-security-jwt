@@ -1,8 +1,10 @@
 package com.example.security_login.domain.user.entity;
 
+import com.example.security_login.domain.user.dto.UserUpdateRequestDto;
 import com.example.security_login.global.auth.oauth.SocialProviderType;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 @Builder
 @Table(name = "user_entity")
 public class UserEntity {
@@ -32,10 +35,10 @@ public class UserEntity {
     private String email;
 
     @Column(name = "is_lock", nullable = false)
-    private boolean isLock;
+    private Boolean isLock;
 
     @Column(name = "is_social", nullable = false)
-    private boolean isSocial;
+    private Boolean isSocial;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "social_provider_type")
@@ -53,4 +56,9 @@ public class UserEntity {
     @LastModifiedDate
     private LocalDateTime updatedDate;
 
+    // 닉네임, 이메일 수정
+    public void updateNicknameAndEmail(UserUpdateRequestDto updateDto) {
+        this.nickname = updateDto.getNickname();
+        this.email = updateDto.getEmail();
+    }
 }
