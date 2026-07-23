@@ -6,6 +6,7 @@ import com.example.security_login.domain.user.dto.UserUpdateRequestDto;
 import com.example.security_login.domain.user.entity.UserEntity;
 import com.example.security_login.domain.user.entity.UserRoleType;
 import com.example.security_login.domain.user.repository.UserRepository;
+import com.example.security_login.global.auth.custom.CustomUserDetails;
 import com.example.security_login.global.exception.BusinessException;
 import com.example.security_login.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class UserService implements UserDetailsService {
                 .email(signupDto.getEmail())
                 .isLock(false)
                 .isSocial(false)
-                .userRoleType(UserRoleType.USER)
+                .userRoleType(UserRoleType.ROLE_USER)
                 .build();
 
         userRepository.save(userEntity);
@@ -61,12 +62,7 @@ public class UserService implements UserDetailsService {
         UserEntity entity = userRepository.findByUsernameAndIsLockAndIsSocial(username, false, false)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        return User.builder()
-                .username(entity.getUsername())
-                .password(entity.getPassword())
-                .roles(entity.getUserRoleType().name())
-                .accountLocked(entity.getIsLock())
-                .build();
+        return new CustomUserDetails(entity);
     }
 
     // 소셜 로그인

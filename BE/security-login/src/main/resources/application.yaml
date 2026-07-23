@@ -7,7 +7,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33065/spring_security_jwt?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: root
-    password: 1234
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  # redis 설정
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   # JPA 설정
   jpa:
@@ -22,3 +28,10 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+# JWT(ACCESS: 1min / REFRESH: 24H)
+app:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}
+    access-expiration: ${JWT_ACCESS_EXPIRATION}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION}

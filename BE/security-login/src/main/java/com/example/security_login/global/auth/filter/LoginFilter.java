@@ -2,6 +2,8 @@ package com.example.security_login.global.auth.filter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StreamUtils;
@@ -31,9 +34,11 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
             .matcher(HttpMethod.POST, "/login");
     private String usernameParameter =  SPRING_SECURITY_FORM_USERNAME_KEY;
     private String passwordParameter =  SPRING_SECURITY_FORM_PASSWORD_KEY;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    public LoginFilter(AuthenticationManager authenticationManager) {
+    public LoginFilter(AuthenticationManager authenticationManager, AuthenticationSuccessHandler authenticationSuccessHandler) {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
 
     @Override
@@ -78,5 +83,12 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                            FilterChain filterChain, Authentication authResult)
+            throws ServletException, IOException {
+        authenticationSuccessHandler.onAuthenticationSuccess(request, response, authResult);
     }
 }

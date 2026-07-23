@@ -24,6 +24,9 @@ public enum ErrorCode {
     *  ================== */
     LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다."),
     INVALID_LOGIN_REQUEST(HttpStatus.BAD_REQUEST, "올바르지 않은 로그인 요청입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "Access Token이 만료되었습니다."),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Refresh Token이 만료되었습니다."),
 
     /* ==================
     *  Authorization(인가)
