@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -35,10 +36,16 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     private String usernameParameter =  SPRING_SECURITY_FORM_USERNAME_KEY;
     private String passwordParameter =  SPRING_SECURITY_FORM_PASSWORD_KEY;
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
 
-    public LoginFilter(AuthenticationManager authenticationManager, AuthenticationSuccessHandler authenticationSuccessHandler) {
+    public LoginFilter(AuthenticationManager authenticationManager,
+                       AuthenticationSuccessHandler authenticationSuccessHandler,
+                       AuthenticationFailureHandler authenticationFailureHandler) {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
         this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.authenticationFailureHandler = authenticationFailureHandler;
+        setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        setAuthenticationFailureHandler(authenticationFailureHandler);
     }
 
     @Override
@@ -85,10 +92,4 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain filterChain, Authentication authResult)
-            throws ServletException, IOException {
-        authenticationSuccessHandler.onAuthenticationSuccess(request, response, authResult);
-    }
 }

@@ -10,6 +10,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,7 @@ public class JwtService {
         }
     }
 
+    // 쿠키 생성
     public Cookie createCookie(String key, String value, int maxAge) {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAge); // 쿠키 TTL
@@ -75,5 +77,22 @@ public class JwtService {
         // cookie.setSecure(true); // Https일 경우 설정
 
         return cookie;
+    }
+
+    // 쿠키 추출
+    public String getCookie(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
+
+        if(cookies == null) {
+            return null;
+        }
+
+        for(Cookie cookie : cookies) {
+            if(name.equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+
+        return null;
     }
 }

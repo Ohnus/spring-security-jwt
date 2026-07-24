@@ -1,7 +1,8 @@
 package com.example.security_login.global.response;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
+@Getter
 public class ResultResponse<T> {
 
     private final int status;

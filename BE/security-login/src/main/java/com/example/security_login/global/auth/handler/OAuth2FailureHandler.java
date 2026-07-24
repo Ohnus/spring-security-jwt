@@ -9,41 +9,28 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.Duration;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Qualifier("LoginFailureHandler")
-public class LoginFailureHandler implements AuthenticationFailureHandler {
+@Qualifier("OAuth2FailureHandler")
+public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
     private final ObjectMapper objectMapper;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request,
-                                        HttpServletResponse response,
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        ErrorCode errorCode;
+        log.warn("소셜 로그인 실패: {}", exception.getMessage(), exception);
 
-        if(exception instanceof AuthenticationServiceException) {
-            log.warn("로그인 실패(400) : {}", exception.getMessage(), exception);
-
-            // POST 이외의 요청, JSON 깨짐 등 잘못된 요청 400 처리
-            errorCode = ErrorCode.INVALID_LOGIN_REQUEST;
-        } else {
-            log.warn("로그인 실패(401) : {}", exception.getMessage(), exception);
-
-            // 아이디, 비밀번호 불일치 등은 401 처리
-            errorCode = ErrorCode.LOGIN_FAILED;
-        }
+        // 사용자의 로그인 취소, OAuth2 인증 코드 오류, Token 교환 실패, Provider 사용자 정보 조회 실패 등 401
+        ErrorCode errorCode = ErrorCode.OAUTH2_LOGIN_FAILED;
 
         ErrorResponse responseBody = ErrorResponse.of(errorCode);
 

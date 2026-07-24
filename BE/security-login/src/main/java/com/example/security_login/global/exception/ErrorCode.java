@@ -22,16 +22,24 @@ public enum ErrorCode {
     /* ==================
     *  Authentication(인증)
     *  ================== */
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
     LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다."),
     INVALID_LOGIN_REQUEST(HttpStatus.BAD_REQUEST, "올바르지 않은 로그인 요청입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "리프레시 토큰이 존재하지 않습니다."),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "Access Token이 만료되었습니다."),
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Refresh Token이 만료되었습니다."),
 
     /* ==================
     *  Authorization(인가)
     *  ================== */
+    FORBIDDEN(HttpStatus.FORBIDDEN, "권한이 부족합니다."),
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
+
+    /* ==================
+    *  OAuth2
+    *  ================== */
+    OAUTH2_LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "소셜 로그인에 실패했습니다."),
 
     /* ==================
     *  User(회원)

@@ -22,6 +22,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
 
+        log.error("Business Exception");
+
         ErrorCode errorCode = e.getErrorcode();
         ErrorResponse response = ErrorResponse.of(errorCode);
 
@@ -33,6 +35,8 @@ public class GlobalExceptionHandler {
     // 검증 예외(@RequestBody + @Valid + @NotBlank)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
+
+        log.error("Validation Exception");
 
         List<ErrorResponse.FieldError> errors = e.getBindingResult().getFieldErrors().stream().map(
                 error -> ErrorResponse.FieldError.of(
@@ -50,6 +54,8 @@ public class GlobalExceptionHandler {
     // 검증 예외(타입)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ErrorResponse> handleTypeMismatchException(MethodArgumentTypeMismatchException e) {
+
+        log.error("Type Mismatch Exception");
 
         List<ErrorResponse.FieldError> errors = List.of(
                 ErrorResponse.FieldError.of(
