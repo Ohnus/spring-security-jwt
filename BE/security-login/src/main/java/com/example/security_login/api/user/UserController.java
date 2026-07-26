@@ -21,8 +21,8 @@ public class UserController {
     private final UserService userService;
 
     // 아이디 중복 검사
-    @GetMapping(value = "/check-username", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> existApi(@Valid @RequestBody UserExistRequestDto existDto) {
+    @GetMapping(value = "/check-username")
+    public ResponseEntity<Boolean> existApi(@Valid @ModelAttribute UserExistRequestDto existDto) {
         return ResponseEntity.ok(userService.existsByUsername(existDto));
     }
 

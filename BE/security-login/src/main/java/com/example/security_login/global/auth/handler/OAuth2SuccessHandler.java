@@ -47,6 +47,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // 응답
         Cookie refreshTokenCookie = jwtService.createCookie("refreshToken", refreshToken, 10);
         response.addCookie(refreshTokenCookie);
-        response.sendRedirect("http://localhost:5173/user");
+        response.sendRedirect("http://localhost:5173/");
     }
 }

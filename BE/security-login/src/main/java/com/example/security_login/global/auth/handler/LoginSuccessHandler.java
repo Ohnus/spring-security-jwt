@@ -6,6 +6,8 @@ import com.example.security_login.global.auth.jwt.repository.RedisRefreshTokenRe
 import com.example.security_login.global.auth.jwt.service.JwtService;
 import com.example.security_login.global.auth.jwt.util.JwtTokenType;
 import com.example.security_login.global.auth.jwt.util.JwtUtil;
+import com.example.security_login.global.response.ResultCode;
+import com.example.security_login.global.response.ResultResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -53,7 +55,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // Access Token Body 응답
         AccessTokenResponseDto dto = new AccessTokenResponseDto(accessToken);
+        ResultResponse<?> resultResponse = ResultResponse.of(ResultCode.USER_LOGIN_SUCCESS, dto);
         response.setContentType("application/json;charset=UTF-8");
-        objectMapper.writeValue(response.getWriter(), dto);
+        objectMapper.writeValue(response.getWriter(), resultResponse);
     }
 }
