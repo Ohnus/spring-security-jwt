@@ -28,9 +28,12 @@ export function AuthProvider({ children }) {
           const errorBody = await res.json();
           console.log(errorBody.status);
           console.log(errorBody.message);
+
+          return;
         }
 
         const data = await res.json();
+        console.log("새로고침 후 토큰 재발급: " + data.accessToken);
         setAccessToken(data.accessToken);
       } catch {
         console.log(e);

@@ -42,7 +42,7 @@ function HomePage() {
           <Link to="/login">로그인 </Link>
         </>
       )}
-      <Link to="/mypage">마이페이지 </Link>
+      <Link to="/my-info">마이페이지 </Link>
       {accessToken && <button onClick={logout}>로그아웃</button>}
     </div>
   );
