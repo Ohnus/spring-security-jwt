@@ -9,7 +9,7 @@ const BACKEND_API_BASE_URL = import.meta.env
 function MyInfoPage() {
   const nav = useNavigate();
   const [useInfo, setUserInfo] = useState(null);
-  const { accessToken } = useAuth();
+  const { accessToken, setAccessToken } = useAuth();
   const authFetch = useAuthFetch();
 
   useEffect(() => {
@@ -50,16 +50,59 @@ function MyInfoPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onDeleteUser = async (username) => {
+    try {
+      const deleteUser = await authFetch(
+        `${BACKEND_API_BASE_URL}/users/me`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        }
+      );
+
+      if (!deleteUser.ok) {
+        const errorBody = await deleteUser.json();
+        console.log(errorBody.status);
+        console.log(errorBody.message);
+        alert("에러 발생");
+        return;
+      }
+
+      const resultBody = await deleteUser.json();
+      setAccessToken(null);
+      console.log(resultBody.status);
+      console.log(resultBody.message);
+      alert("회원 탈퇴가 완료되었습니다.");
+      nav("/");
+    } catch {
+      console.log("error");
+    }
+  };
+
   return (
-    <div>
-      <h2>유저 정보</h2>
-      <p>아이디: {useInfo?.username}</p>
-      <p>
-        소셜 유무: {useInfo?.isSocial ? "소셜 유저" : "서비스 유저"}
-      </p>
-      <p>닉네임: {useInfo?.nickname}</p>
-      <p>이메일: {useInfo?.email}</p>
-    </div>
+    <>
+      <div>
+        <h2>유저 정보</h2>
+        <p>아이디: {useInfo?.username}</p>
+        <p>
+          소셜 유무: {useInfo?.isSocial ? "소셜 유저" : "서비스 유저"}
+        </p>
+        <p>닉네임: {useInfo?.nickname}</p>
+        <p>이메일: {useInfo?.email}</p>
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            onDeleteUser(useInfo?.username);
+          }}
+        >
+          탈퇴하기
+        </button>
+      </div>
+    </>
   );
 }
 

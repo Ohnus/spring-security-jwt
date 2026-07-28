@@ -38,7 +38,8 @@ export function useAuthFetch() {
     if (!reissueRes.ok) {
       setAccessToken(null);
       alert("로그인이 해제되었습니다. 다시 로그인 해주세요.");
-      return nav("/home");
+      nav("/");
+      return;
     }
 
     // 5. 새로운 AccessToken 저장
