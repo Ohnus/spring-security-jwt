@@ -1,7 +1,6 @@
 package com.example.security_login.global.auth.handler;
 
 import com.example.security_login.global.exception.ErrorCode;
-import com.example.security_login.global.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
