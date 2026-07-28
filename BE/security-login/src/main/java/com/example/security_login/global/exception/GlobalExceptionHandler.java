@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
 
-        log.error("Business Exception");
+        log.error("Business Exception: ", e);
 
         ErrorCode errorCode = e.getErrorcode();
         ErrorResponse response = ErrorResponse.of(errorCode);
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
 
-        log.error("Validation Exception");
+        log.error("Validation Exception: ", e);
 
         List<ErrorResponse.FieldError> errors = e.getBindingResult().getFieldErrors().stream().map(
                 error -> ErrorResponse.FieldError.of(
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ErrorResponse> handleTypeMismatchException(MethodArgumentTypeMismatchException e) {
 
-        log.error("Type Mismatch Exception");
+        log.error("Type Mismatch Exception: ", e);
 
         List<ErrorResponse.FieldError> errors = List.of(
                 ErrorResponse.FieldError.of(
